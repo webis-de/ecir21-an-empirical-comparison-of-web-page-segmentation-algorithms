@@ -7,7 +7,7 @@ We here describe how to get the code and how to run each algorithm for one page,
 ### Baseline
 Preparation:
   - Check out this repository
-  - Get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
+  - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
   - If it does not exist yet, create the directory `segmentations` next to this README.
   - In a shell, go to the directory that contains this README.
@@ -51,4 +51,40 @@ Todo: Johannes
 
 
 ## Evaluation
-Todo: Johannes
+Preparation:
+  - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
+  - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
+  - If it does not exist yet, create the directory `results` next to this README.
+  - In a shell, go to the directory that contains this README.
+
+If you want to produce an image for the ground-truth:
+```
+Rscript cikm20/src/main/r/plot-segmentations.R \
+  --input webis-webseg-20/000000/ground-truth.json \
+  --color-per-segment \
+  --output results/ground-truth.png
+```
+
+Execution (exemplified for the algorithm 'baseline'):
+```
+# Show the segmentation
+#  - Produces results/baseline.png
+Rscript cikm20/src/main/r/plot-segmentations.R \
+  --input segmentations/baseline.json \
+  --screenshot webis-webseg-20/000000/screenshot.png \
+  --color-per-segment \
+  --output results/baseline.png
+
+# Get BCubed precision, recall, and F-measure
+#  - Exemplified for 'pixels' as atomic elements
+#    Other options: 'edges-fine', 'edges-coarse', 'nodes', 'chars'
+#  - Produces results/baseline-pixels.csv
+Rscript cikm20/src/main/r/evaluate-segmentation.R \
+  --algorithm segmentations/baseline.json \
+  --ground-truth webis-webseg-20/000000/ground-truth.json \
+  --size-function pixels \
+  --output results/baseline-pixels.csv
+```
+
+The agreement of two algorithms is calculated the same way (using `cikm20/src/main/r/evaluate-segmentation.R`), but with the segmentation of the second algorithm as the "ground-truth".
+
