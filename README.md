@@ -7,14 +7,14 @@ The instructions here use the page with ID 000000 so that they work with both th
 
 
 ### Baseline
-Preparation:
+#### Preparation:
   - Check out this repository
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
   - If it does not exist yet, create the directory `segmentations` next to this README.
   - In a shell, go to the directory that contains this README.
 
-Execution:
+#### Execution:
 ```
 Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
   --input webis-webseg-20/000000/screenshot.png \
@@ -22,38 +22,38 @@ Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
 ```
 
 ### VIPS
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Lars
 
 ### HEPS
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Lars
 
 ### Cormier et al.
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Lars
 
 ### MMDetection
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Lars
 
 ### Meier et al.
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Lars
 
 ### Ensemble
-Preparation:
-Execution:
+#### Preparation:
+#### Execution:
 Todo: Johannes
 
 
 ## Evaluation
-Preparation:
+#### Preparation:
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
   - If it does not exist yet, create the directory `results` next to this README.
@@ -67,7 +67,7 @@ Rscript cikm20/src/main/r/plot-segmentations.R \
   --output results/ground-truth.png
 ```
 
-Execution (exemplified for the algorithm 'baseline'):
+#### Execution (exemplified for the algorithm 'baseline'):
 ```
 # Show the segmentation
 #  - Produces results/baseline.png
