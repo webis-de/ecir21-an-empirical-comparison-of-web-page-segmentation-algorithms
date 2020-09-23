@@ -68,6 +68,7 @@ Rscript cikm20/src/main/r/plot-segmentations.R \
 ```
 
 #### Execution (exemplified for the algorithm 'baseline'):
+The segmentation of the algorithm should be now contained in a JSON file `segmentations/baseline.json`. If not, run the algorithm as described above.
 ```
 # Show the segmentation
 #  - Produces results/baseline.png
