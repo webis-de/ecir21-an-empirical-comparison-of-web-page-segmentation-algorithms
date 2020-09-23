@@ -14,7 +14,9 @@ Preparation:
 
 Execution:
 ```
-Rscript algorithms/baseline/src/main/r/segmentation-baseline.R --input webis-webseg-20/000000/screenshot.png --output output/baseline.json
+Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
+  --input webis-webseg-20/000000/screenshot.png \
+  --output output/baseline.json
 ```
 
 ### VIPS
