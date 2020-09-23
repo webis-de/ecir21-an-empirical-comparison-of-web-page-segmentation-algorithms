@@ -1,7 +1,9 @@
 # Code for the Paper "Reproducing Web Page Segmentation Algorithms"
 
 ## Algorithms
-We here describe how to get the code and how to run each algorithm for one page, so that it produces a segmentation in the common format. The instructions here use the page with ID 000000 so that it also works with the sample ZIP archive of the [dataset](https://doi.org/10.5281/zenodo.3354902), webis-webseg-20-000000.zip: download this zip file, extract it next to this README, and rename the directory from `webis-webseg-20-000000` to `webis-webseg-20` to follow the instructions. All instructions produce a segmentation (a JSON file in the `segmentations` directory) which can then be used in the [evaluation](#evaluation).
+We here describe how to get the code and how to run each algorithm for one page, so that it produces a segmentation in the common format (a JSON file in the `segmentations` directory) which can then be used in the [evaluation](#evaluation).
+
+The instructions here use the page with ID 000000 so that they work with both the sample ZIP archive, `webis-webseg-20-000000.zip`, as well as with the full [dataset](https://doi.org/10.5281/zenodo.3354902). For the sample ZIP archive, download it from the [dataset page](https://doi.org/10.5281/zenodo.3354902), extract it next to this README, and rename the directory from `webis-webseg-20-000000` to `webis-webseg-20`. If you download and extract the full dataset, it should already have the correct name. Then follow the instructions below.
 
 
 ### Baseline
