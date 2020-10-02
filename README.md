@@ -119,7 +119,7 @@ We use a slightly modified version of Manabe et al.'s [HEPS implementation](http
 
 ##### Prerequisites
 
-See the [VIPS prerequisites](#prerequisites-1).
+See the [VIPS prerequisites](#prerequisites).
 
 ##### Building the script
 
