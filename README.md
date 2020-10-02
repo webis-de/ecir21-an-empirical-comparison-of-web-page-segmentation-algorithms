@@ -4,9 +4,6 @@
   - Check out this repository
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
-  - Install [Docker](https://www.docker.com/)
-  - Install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net)
-    - e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
   - If it does not exist yet, create the directory `segmentations` next to this README.
 
 
@@ -36,6 +33,8 @@ We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpop
 The main JavaScript file is the [vipsjs.js](algorithms/vips/scripts/VIPSScript-1.0.0/vipsjs.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/vips/compile.sh) to re-compile the Java part that loads the VIPS implementation.
 
 #### Preparation:
+  - Install [Docker](https://www.docker.com/)
+  - If you want to re-compile the Java part, install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net); e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
   - In a shell, go to the directory that contains this README.
 
 #### Configuration:
@@ -167,8 +166,6 @@ Todo: Johannes
 
 ## Evaluation
 #### Preparation:
-  - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
-  - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
   - If it does not exist yet, create the directory `results` next to this README.
   - In a shell, go to the directory that contains this README.
 
