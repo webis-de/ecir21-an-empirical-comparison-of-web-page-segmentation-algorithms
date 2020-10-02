@@ -37,6 +37,8 @@ We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpop
   - Get the sample web archive ZIP, `webis-web-archive-17-000000.zip` or the full [dataset](https://webis.de/data/webis-web-archive-17.html) and extract it next to this README. If you use the sample web archive ZIP, rename the directory from `webis-web-archive-17-000000`to `webis-web-archive-17`.
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
+  - If it does not exist yet, create the directory `segmentations` next to this README.
+  - In a shell, go to the directory that contains this README.
 
 ##### Building the script
 
@@ -183,9 +185,31 @@ The `segmentations/logs` and `segmentations/script` folder can then be safely de
 Todo: Lars
 
 ### Cormier et al.
+
+We use a Python implementation graciously provided by [Michael Cormier](https://cs.uwaterloo.ca/~m4cormie/) and Zhuofu Tao, to whom we express our gratitude.
+
 #### Preparation:
+
+  - Install [Python 3](https://www.python.org/downloads/)
+    - e.g. for Debian/Ubuntu: `sudo apt install python3`
+  - Install `pip3`
+    - e.g. for Debian/Ubuntu: `sudo apt install python3-pip`
+  - If it does not exist yet, create the directory `segmentations` next to this README.
+  - In a shell, go to the directory that contains this README.
+  - Install the required Python packages:
+
+  ```
+  pip3 install -r algorithms/cormier/requirements.txt
+  ```
+
 #### Execution:
-Todo: Lars
+
+```
+python3 algorithms/cormier/cormier.py webis-webseg-20/000000/screenshot.png 000000
+```
+where `000000` is the ID and output name, resulting in the output file `000000.json` with the `id` field set to `000000`.
+
+You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algorithms/cormier/cormier.py).
 
 ### MMDetection
 #### Preparation:
