@@ -31,6 +31,7 @@ We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpop
 
   - Install [Docker](https://www.docker.com/)
   - Install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net)
+    - e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
   - Check out this repository
   - Get the [source code](https://github.com/webis-de/webis-web-archiver/archive/master.zip) of the Webis Web Archiver and extract it next to this README.
   - Get the [binaries](https://github.com/webis-de/webis-web-archiver/releases/download/0.1.0/webis-web-archiver.jar) for the Webis Web Archiver and place them next to this README.
