@@ -41,14 +41,16 @@ The main JavaScript file is the [vipsjs.js](algorithms/vips/scripts/VIPSScript-1
 Set the PDoC parameter by changing the value in the [pdoc.txt](algorithms/vips/scripts/VIPSScript-1.0.0/pdoc.txt).
 
 #### Execution:
+You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
 ```
+# Execute VIPS while reproducing the web page from the archive
 ./algorithms/vips/vips.sh \
   --archive webis-web-archive-17/pages/000000/ \
   --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
   --id 000000 \
   --output segmentations
 
-# Convert hierarchical segmentation to a flat one:
+# Convert hierarchical segmentation to a flat one
 Rscript cikm20/src/main/r/flatten-segmentations.R \
   --input segmentations/vips.json \
   --output segmentations/vips-flattened.json
