@@ -112,7 +112,73 @@ zip -j -u scripts/VIPSScript-1.0.0/VIPSScript.jar pdoc.txt
 ```
 
 ### HEPS
+
+We use a slightly modified version of Manabe et al.'s [HEPS implementation](https://github.com/tmanabe/HEPS) that outputs bounding box coordinates instead of text segments. We thank the original authors for providing their implementation.
+
 #### Preparation:
+
+##### Prerequisites
+
+See the [VIPS prerequisites](#prerequisites-1).
+
+##### Building the script
+
+The script must be supplied to the reproduction environment as a JAR file.
+
+- Compile [`HEPSScript.java`](algorithms/heps/HEPSScript.java)
+
+```
+javac -cp "webis-web-archiver.jar:." \
+  --release 8 \
+  algorithms/heps/HEPSScript.java
+```
+
+- Create the appropriate directory for the script
+
+```
+mkdir -p scripts/HEPSScript-1.0.0
+```
+
+- Assemble the JAR
+
+```
+jar cfM scripts/HEPSScript-1.0.0/HEPSScript.jar \
+  -C algorithms/heps HEPSScript.class \
+  -C algorithms/heps HEPS.user.js
+```
+
+- Place the supplied `script.conf` alongside `HEPSScript.jar`
+
+```
+cp algorithms/heps/script.conf scripts/HEPSScript-1.0.0/
+```
+
+#### Execution:
+
+As the reproduction environment has no knowledge of the page ID, the output file is initially named `out.json` and the `id` field therein contains the placeholder string `TBFWID`.
+
+- Create the segmentation:
+
+```
+webis-web-archiver-master/src-bash/reproduce.sh \
+  --archive webis-web-archive-17/pages/000000 \
+  --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
+  --script HEPSScript \
+  --scriptsdirectory scripts \
+  --output segmentations
+```
+
+For segmenting other pages from webis-web-archive-17, you may find the corresponding URLs in the `sites-and-pages.txt` file supplied there.
+
+- Insert the ID and rename the output file
+
+```
+sed s/TBFWID/000000/ < segmentations/script/out.json > segmentations/heps.json
+```
+
+The `segmentations/logs` and `segmentations/script` folder can then be safely deleted.
+
+
 #### Execution:
 Todo: Lars
 
