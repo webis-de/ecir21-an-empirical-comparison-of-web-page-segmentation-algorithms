@@ -22,9 +22,87 @@ Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
 ```
 
 ### VIPS
+
+We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpopela/vips_java), transpiled to JavaScript. We thank the original author for providing his implementation.
+
 #### Preparation:
+
+##### Prerequisites
+
+  - Install [Docker](https://www.docker.com/)
+  - Install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net)
+  - Check out this repository
+  - Get the [source code](https://github.com/webis-de/webis-web-archiver/archive/master.zip) of the Webis Web Archiver and extract it next to this README.
+  - Get the [binaries](https://github.com/webis-de/webis-web-archiver/releases/download/0.1.0/webis-web-archiver.jar) for the Webis Web Archiver and place them next to this README.
+  - Get the sample web archive ZIP, `webis-web-archive-17-000000.zip` or the full [dataset](https://webis.de/data/webis-web-archive-17.html) and extract it next to this README. If you use the sample web archive ZIP, rename the directory from `webis-web-archive-17-000000`to `webis-web-archive-17`.
+  - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
+  - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
+
+##### Building the script
+
+The script must be supplied to the reproduction environment as a JAR file.
+
+- Compile [`VIPSScript.java`](algorithms/vips/VIPSScript.java)
+
+```
+javac -cp "webis-web-archiver.jar:." \
+  --release 8 \
+  algorithms/vips/VIPSScript.java
+```
+
+- Create the appropriate directory for the script
+
+```
+mkdir -p scripts/VIPSScript-1.0.0
+```
+
+- Assemble the JAR
+
+```
+jar cfM scripts/VIPSScript-1.0.0/VIPSScript.jar \
+  -C algorithms/vips VIPSScript.class \
+  -C algorithms/vips pdoc.txt \
+  -C algorithms/vips vipsjs.js
+```
+
+- Place the supplied `script.conf` alongside `VIPSScript.jar`
+
+```
+cp algorithms/vips/script.conf scripts/VIPSScript-1.0.0/
+```
+
 #### Execution:
-Todo: Lars
+
+As the reproduction environment has no knowledge of the page ID, the output file is initially named `out.json` and the `id` field therein contains the placeholder string `TBFWID`.
+
+- Create the segmentation:
+
+```
+webis-web-archiver-master/src-bash/reproduce.sh \
+  --archive webis-web-archive-17/pages/000000 \
+  --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
+  --script VIPSScript \
+  --scriptsdirectory scripts \
+  --output segmentations
+```
+
+For segmenting other pages from webis-web-archive-17, you may find the corresponding URLs in the `sites-and-pages.txt` file supplied there.
+
+- Insert the ID and rename the output file
+
+```
+sed s/TBFWID/000000/ < segmentations/script/out.json > segmentations/vips.json
+```
+
+The `segmentations/logs` and `segmentations/script` folder can then be safely deleted.
+
+As the segmentations that VIPS produces are hierarchical, they need to be flattened before evaluation.
+
+```
+Rscript cikm20/src/main/r/flatten-task.R \
+  --input segmentations/vips.json \
+  --output segmentations/vips_flattened.json
+```
 
 ### HEPS
 #### Preparation:
