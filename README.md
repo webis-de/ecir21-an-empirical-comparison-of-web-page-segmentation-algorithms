@@ -1,17 +1,25 @@
 # Code for the Paper "Reproducing Web Page Segmentation Algorithms"
 
-## Algorithms
-We here describe how to get the code and how to run each algorithm for one page, so that it produces a segmentation in the common format (a JSON file in the `segmentations` directory) which can then be used in the [evaluation](#evaluation).
-
-The instructions here use the page with ID 000000 so that they work with both the sample ZIP archive, `webis-webseg-20-000000.zip`, as well as with the full [dataset](https://doi.org/10.5281/zenodo.3354902). For the sample ZIP archive, download it from the [dataset page](https://doi.org/10.5281/zenodo.3354902), extract it next to this README, and rename the directory from `webis-webseg-20-000000` to `webis-webseg-20`. If you download and extract the full dataset, it should already have the correct name. Then follow the instructions below.
-
-
-### Baseline
-#### Preparation:
+## Common Preparations
   - Check out this repository
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
+  - Install [Docker](https://www.docker.com/)
+  - Install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net)
+    - e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
   - If it does not exist yet, create the directory `segmentations` next to this README.
+
+
+## Algorithms
+We here describe how to get the code and how to run each algorithm for one page, so that it produces a segmentation in the common format (a JSON file in the `segmentations` directory) which can then be used in the [evaluation](#evaluation).
+
+The instructions here use the page with ID 000000 so that they work with the sample ZIP archives, `webis-webseg-20-000000.zip` and `webis-web-archive-17-000000.zip`, as well as with the full datasets of [segmentations](https://doi.org/10.5281/zenodo.3354902) and [archives](https://doi.org/10.5281/zenodo.1002203). For the sample ZIP archives, download them from the respective full dataset pages, extract them next to this README, and rename them by removing the `-000000` suffix. If you download and extract the full datasets, they already have the correct name. Then follow the instructions below.
+
+
+### Baseline
+The baseline creates a single segment that contains the entire web page.
+
+#### Preparation:
   - In a shell, go to the directory that contains this README.
 
 #### Execution:
@@ -21,107 +29,39 @@ Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
   --output segmentations/baseline.json
 ```
 
-### VIPS
 
+### VIPS
 We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpopela/vips_java), transpiled to JavaScript. We thank the original author for providing his implementation.
 
+The main JavaScript file is the [vipsjs.js](algorithms/vips/scripts/VIPSScript-1.0.0/vipsjs.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/vips/compile.sh) to re-compile the Java part that loads the VIPS implementation.
+
 #### Preparation:
-
-##### Prerequisites
-
-  - Install [Docker](https://www.docker.com/)
-  - Install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net)
-    - e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
-  - Check out this repository
-  - Get the [source code](https://github.com/webis-de/webis-web-archiver/archive/master.zip) of the Webis Web Archiver and extract it next to this README.
-  - Get the [binaries](https://github.com/webis-de/webis-web-archiver/releases/download/0.1.0/webis-web-archiver.jar) for the Webis Web Archiver and place them next to this README.
-  - Get the sample web archive ZIP, `webis-web-archive-17-000000.zip` or the full [dataset](https://webis.de/data/webis-web-archive-17.html) and extract it next to this README. If you use the sample web archive ZIP, rename the directory from `webis-web-archive-17-000000`to `webis-web-archive-17`.
-  - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
-  - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
-  - If it does not exist yet, create the directory `segmentations` next to this README.
   - In a shell, go to the directory that contains this README.
 
-##### Building the script
-
-The script must be supplied to the reproduction environment as a JAR file.
-
-- Compile [`VIPSScript.java`](algorithms/vips/VIPSScript.java)
-
-```
-javac -cp "webis-web-archiver.jar:." \
-  --release 8 \
-  algorithms/vips/VIPSScript.java
-```
-
-- Create the appropriate directory for the script
-
-```
-mkdir -p scripts/VIPSScript-1.0.0
-```
-
-- Assemble the JAR
-
-```
-jar cfM scripts/VIPSScript-1.0.0/VIPSScript.jar \
-  -C algorithms/vips VIPSScript.class \
-  -C algorithms/vips pdoc.txt \
-  -C algorithms/vips vipsjs.js
-```
-
-- Place the supplied `script.conf` alongside `VIPSScript.jar`
-
-```
-cp algorithms/vips/script.conf scripts/VIPSScript-1.0.0/
-```
+#### Configuration:
+Set the PDoC parameter by changing the value in the [pdoc.txt](algorithms/vips/scripts/VIPSScript-1.0.0/pdoc.txt).
 
 #### Execution:
-
-As the reproduction environment has no knowledge of the page ID, the output file is initially named `out.json` and the `id` field therein contains the placeholder string `TBFWID`.
-
-- Create the segmentation:
-
 ```
-webis-web-archiver-master/src-bash/reproduce.sh \
-  --archive webis-web-archive-17/pages/000000 \
+./algorithms/vips/vips.sh \
+  --archive webis-web-archive-17/pages/000000/ \
   --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
-  --script VIPSScript \
-  --scriptsdirectory scripts \
+  --id 000000 \
   --output segmentations
-```
 
-For segmenting other pages from webis-web-archive-17, you may find the corresponding URLs in the `sites-and-pages.txt` file supplied there.
-
-- Insert the ID and rename the output file
-
-```
-sed s/TBFWID/000000/ < segmentations/script/out.json > segmentations/vips.json
-```
-
-The `segmentations/logs` and `segmentations/script` folder can then be safely deleted.
-
-As the segmentations that VIPS produces are hierarchical, they need to be flattened before evaluation.
-
-```
-Rscript cikm20/src/main/r/flatten-task.R \
+# Convert hierarchical segmentation to a flat one:
+Rscript cikm20/src/main/r/flatten-segmentations.R \
   --input segmentations/vips.json \
-  --output segmentations/vips_flattened.json
+  --output segmentations/vips-flattened.json
 ```
 
-Adjusting the PDoC is done by replacing the file `pdoc.txt` within the JAR:
-
-```
-echo 1 > pdoc.txt
-zip -j -u scripts/VIPSScript-1.0.0/VIPSScript.jar pdoc.txt
-```
 
 ### HEPS
-
 We use a slightly modified version of Manabe et al.'s [HEPS implementation](https://github.com/tmanabe/HEPS) that outputs bounding box coordinates instead of text segments. We thank the original authors for providing their implementation.
 
 #### Preparation:
 
 ##### Prerequisites
-
 See the [VIPS prerequisites](#prerequisites).
 
 ##### Building the script

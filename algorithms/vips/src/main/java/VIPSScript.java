@@ -23,12 +23,12 @@ public class VIPSScript extends InteractionScript {
       Logger.getLogger(VIPSScript.class.getName());
 
   //////////////////////////////////////////////////////////////////////////////
-  // CONSTANTS
+  // MEMBERS
   //////////////////////////////////////////////////////////////////////////////
 
-  public static final String NAME = "vips";
+  private final String vipsJs;
 
-  public static final Version VERSION = new Version(1, 1, 0);
+  private final int pDoC;
 
   //////////////////////////////////////////////////////////////////////////////
   // CONSTRUCTORS
@@ -37,6 +37,14 @@ public class VIPSScript extends InteractionScript {
   public VIPSScript(final Path scriptDirectory)
   throws IOException {
     super(scriptDirectory);
+
+    LOG.info("Loading pDoC from pdoc.txt");
+    this.pDoC = Integer.valueOf(new Scanner(scriptDirectory.resolve("pdoc.txt")).useDelimiter("\\A").next());
+    LOG.info("Permitted Degree of Coherence is " + this.pDoC);
+
+    LOG.info("Loading VIPS script");
+    this.vipsJs = new Scanner(scriptDirectory.resolve("vipsjs.js")).useDelimiter("\\A").next()
+      + "\nvar tester = new VipsTester();\nreturn tester.main(\"TBFWID\"," + this.pDoC + ");";
   }
   
   //////////////////////////////////////////////////////////////////////////////
@@ -49,7 +57,7 @@ public class VIPSScript extends InteractionScript {
   throws Throwable {
     final WebDriver window = browser.openWindow(startUrl);
     this.scrollDown(browser, window);
-    this.executeVIPS(browser, window, outputDirectory);
+    this.executeVips(browser, window, outputDirectory);
   }
 
   protected void scrollDown(final Browser browser, final WebDriver window) {
@@ -80,24 +88,14 @@ public class VIPSScript extends InteractionScript {
     browser.waitForQuiescence(quietPeriodInSeconds, waitTimeoutInSeconds);
   }
 
-  protected void executeVIPS(final Browser browser, final WebDriver window, final Path outputDirectory)
+  protected void executeVips(final Browser browser, final WebDriver window, final Path outputDirectory)
   throws Throwable {
-    LOG.info("Loading VIPS script");
-    String vipsJs = new Scanner(getClass().getResourceAsStream("/vipsjs.js")).useDelimiter("\\A").next();
-    JavascriptExecutor jsExecutor = (JavascriptExecutor) window;
-    LOG.info("Loading pDoC from pdoc.txt");
-    int pDoC = Integer.valueOf(new Scanner(getClass().getResourceAsStream("pdoc.txt")).useDelimiter("\\A").next());
-    LOG.info("Permitted Degree of Coherence is " + pDoC);
-
-    vipsJs += "\nvar tester = new VipsTester();\nreturn tester.main(\"TBFWID\"," + pDoC + ");";
-
-    // LOG.info("VIPS script is: " + vipsJs);
-
     LOG.info("Executing VIPS");
-    String json = (String) jsExecutor.executeScript(vipsJs);
-    LOG.info("Writing result to " + outputDirectory.toString() + "/out.json");
+    JavascriptExecutor jsExecutor = (JavascriptExecutor) window;
+    String json = (String) jsExecutor.executeScript(this.vipsJs);
+    LOG.info("Writing result to " + outputDirectory.toString() + "/vips.json");
     try (final Writer writer = new OutputStreamWriter(new FileOutputStream(
-            outputDirectory.resolve("out.json").toFile()), "UTF-8")) {
+            outputDirectory.resolve("vips.json").toFile()), "UTF-8")) {
       writer.write(json);
     }
   }
