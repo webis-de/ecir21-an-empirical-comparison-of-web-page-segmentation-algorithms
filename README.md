@@ -104,6 +104,13 @@ Rscript cikm20/src/main/r/flatten-task.R \
   --output segmentations/vips_flattened.json
 ```
 
+Adjusting the PDoC is done by replacing the file `pdoc.txt` within the JAR:
+
+```
+echo 1 > pdoc.txt
+zip -j -u scripts/VIPSScript-1.0.0/VIPSScript.jar pdoc.txt
+```
+
 ### HEPS
 #### Preparation:
 #### Execution:
