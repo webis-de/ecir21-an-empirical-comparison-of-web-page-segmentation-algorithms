@@ -181,9 +181,6 @@ sed s/TBFWID/000000/ < segmentations/script/out.json > segmentations/heps.json
 The `segmentations/logs` and `segmentations/script` folder can then be safely deleted.
 
 
-#### Execution:
-Todo: Lars
-
 ### Cormier et al.
 
 We use a Python implementation graciously provided by [Michael Cormier](https://cs.uwaterloo.ca/~m4cormie/) and Zhuofu Tao, to whom we express our gratitude.
