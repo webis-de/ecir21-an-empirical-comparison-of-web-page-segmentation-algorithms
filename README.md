@@ -102,8 +102,9 @@ Todo: Lars
 
 
 ### Ensemble
-The Ensemble simply uses the segmentation fusion algorithm.
+The Ensemble uses the segmentation fusion algorithm.
 
+  - If one of these files is missing in `segmentations`, run the corresponding algorithm as described above: `vips.json`, `heps.json`, `cormier.json`, and `mmdetection.json`.
   - In a shell, go to the directory that contains this README.
 
 ```
