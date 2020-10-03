@@ -102,7 +102,27 @@ Todo: Lars
 
 
 ### Ensemble
-Todo: Johannes
+The Ensemble simply uses the segmentation fusion algorithm.
+
+  - In a shell, go to the directory that contains this README.
+
+```
+# Create one segmentation file that contains VIPS, HEPS, Cormier et al., and MMDetection segmentations
+Rscript cikm20/src/main/r/combine-segmentation-files.R \
+  segmentations/vips.json \
+  segmentations/heps.json \
+  segmentations/cormier.json \
+  segmentations/mmdetection.json \
+  segmentations/all.json
+
+# Create the ensemble segmentation
+Rscript cikm20/src/main/r/fuse-segmentations.R \
+  --input segmentations/all.json \
+  --segments-min-annotators 2 \
+  --size-function pixels \
+  --disagreement-threshold 0.5 \
+  --output segmentations/ensemble.json
+```
 
 
 ## Evaluation
