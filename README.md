@@ -1,4 +1,9 @@
-# Code for the Paper "Reproducing Web Page Segmentation Algorithms"
+# Repository for the Paper "Reproducing Web Page Segmentation Algorithms"
+This repository enables the reproduction of the experiments from the paper, but also to run the algorithms on new data.
+  - [Common Preparations](#common-preparations): necessary setup steps
+  - [Algorithms](#algorithms): running each algorithm to create segmentations
+  - [Evaluation](#evaluation): evaluating the segmentations
+  - [Plotting Segmentations](#plotting-segmentations): visually checking on segmentations
 
 ## Common Preparations
   - Check out this repository
@@ -98,18 +103,12 @@ where `000000` is the ID and output name, resulting in the output file `000000.j
 You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algorithms/cormier/cormier.py).
 
 ### MMDetection
-#### Preparation:
-#### Execution:
 Todo: Lars
 
 ### Meier et al.
-#### Preparation:
-#### Execution:
 Todo: Lars
 
 ### Ensemble
-#### Preparation:
-#### Execution:
 Todo: Johannes
 
 
