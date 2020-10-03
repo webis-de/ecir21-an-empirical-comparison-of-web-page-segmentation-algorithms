@@ -114,31 +114,14 @@ Todo: Johannes
 
 
 ## Evaluation
+The evaluation is here exemplified for the `baseline` algorithm and for `pixels` as atomic elements (the other options are `edges-fine`, `edges-coarse`, `nodes`, and `chars`).
+
+  - The segmentation of the algorithm should be contained in a JSON file `segmentations/baseline.json`. If not, run the algorithm as described above.
   - If it does not exist yet, create the directory `results` next to this README.
   - In a shell, go to the directory that contains this README.
-
-If you want to produce an image for the ground-truth:
+  
 ```
-Rscript cikm20/src/main/r/plot-segmentations.R \
-  --input webis-webseg-20/000000/ground-truth.json \
-  --color-per-segment \
-  --output results/ground-truth.png
-```
-
-The segmentation of the algorithm should be contained in a JSON file `segmentations/baseline.json`. If not, run the algorithm as described above.
-```
-# Show the segmentation
-#  - Produces results/baseline.png
-Rscript cikm20/src/main/r/plot-segmentations.R \
-  --input segmentations/baseline.json \
-  --screenshot webis-webseg-20/000000/screenshot.png \
-  --color-per-segment \
-  --output results/baseline.png
-
 # Get BCubed precision, recall, and F-measure
-#  - Exemplified for 'pixels' as atomic elements
-#    Other options: 'edges-fine', 'edges-coarse', 'nodes', 'chars'
-#  - Produces results/baseline-pixels.csv
 Rscript cikm20/src/main/r/evaluate-segmentation.R \
   --algorithm segmentations/baseline.json \
   --ground-truth webis-webseg-20/000000/ground-truth.json \
@@ -146,5 +129,14 @@ Rscript cikm20/src/main/r/evaluate-segmentation.R \
   --output results/baseline-pixels.csv
 ```
 
-The agreement of two algorithms is calculated the same way (using `cikm20/src/main/r/evaluate-segmentation.R`), but with the segmentation of the second algorithm as the "ground-truth".
+The agreement of two algorithms is calculated the same way, but with the segmentation of the second algorithm as the "ground-truth".
+
+
+## Plotting Segmentations
+```
+Rscript cikm20/src/main/r/plot-segmentations.R \
+  --input <path/to/segmentation>.json \
+  --color-per-segment \
+  --output <path/to/output-image>.png
+```
 
