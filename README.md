@@ -1,7 +1,16 @@
 # Repository for the Paper "Reproducing Web Page Segmentation Algorithms"
 This repository enables the reproduction of the experiments from the paper, but also to run the algorithms on new data.
+
+Outline:
   - [Common Preparations](#common-preparations): necessary setup steps
-  - [Algorithms](#algorithms): running each algorithm to create segmentations
+  - [Algorithms](#algorithms): running each segmentation algorithm on the Webis-WebSeg-20
+    - [Baseline](#baseline)
+    - [VIPS](#vips)
+    - [HEPS](#heps)
+    - [Cormier et al.](#cormier-et-al)
+    - [MMDetection](#mmdetection)
+    - [Meier et al.](#meier-et-al)
+    - [Ensemble](#ensemble)
   - [Evaluation](#evaluation): evaluating the segmentations
   - [Plotting Segmentations](#plotting-segmentations): visually checking on segmentations
 
