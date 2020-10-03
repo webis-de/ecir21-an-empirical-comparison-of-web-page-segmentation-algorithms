@@ -22,12 +22,10 @@ public class HEPSScript extends InteractionScript {
           Logger.getLogger(HEPSScript.class.getName());
 
   //////////////////////////////////////////////////////////////////////////////
-  // CONSTANTS
+  // MEMBERS
   //////////////////////////////////////////////////////////////////////////////
 
-  public static final String NAME = "hepsScript";
-
-  public static final Version VERSION = new Version(1, 1, 0);
+  private final String hepsJs;
 
   //////////////////////////////////////////////////////////////////////////////
   // CONSTRUCTORS
@@ -36,6 +34,10 @@ public class HEPSScript extends InteractionScript {
   public HEPSScript(final Path scriptDirectory)
   throws IOException {
     super(scriptDirectory);
+
+    LOG.info("Loading HEPS script");
+    this.hepsJs = new Scanner(scriptDirectory.resolve("heps.js")).useDelimiter("\\A").next()
+      + "\nreturn window.HEPS.json;";
   }
   
   //////////////////////////////////////////////////////////////////////////////
@@ -48,7 +50,7 @@ public class HEPSScript extends InteractionScript {
           throws Throwable {
     final WebDriver window = browser.openWindow(startUrl);
     this.scrollDown(browser, window);
-    this.executeHEPS(browser, window, outputDirectory);
+    this.executeHeps(browser, window, outputDirectory);
   }
 
   protected void scrollDown(final Browser browser, final WebDriver window) {
@@ -79,20 +81,15 @@ public class HEPSScript extends InteractionScript {
     browser.waitForQuiescence(quietPeriodInSeconds, waitTimeoutInSeconds);
   }
 
-  protected void executeHEPS(
+  protected void executeHeps(
           final Browser browser, final WebDriver window, final Path outputDirectory)
   throws Throwable {
-    LOG.info("Loading HEPS script");
-    String hepsJs = new Scanner(getClass().getResourceAsStream("/HEPS.user.js")).useDelimiter("\\A").next();
-    JavascriptExecutor jsExecutor = (JavascriptExecutor) window;
-
     LOG.info("Executing HEPS");
-    jsExecutor.executeScript(hepsJs);
-    LOG.info("Retrieving result");
-    String json = (String) jsExecutor.executeScript("return window.HEPS.json");
-    LOG.info("Writing result to " + outputDirectory.toString() + "/out.json");
+    JavascriptExecutor jsExecutor = (JavascriptExecutor) window;
+    String json = (String) jsExecutor.executeScript(this.hepsJs);
+    LOG.info("Writing result to " + outputDirectory.toString() + "/heps.json");
     try (final Writer writer = new OutputStreamWriter(new FileOutputStream(
-            outputDirectory.resolve("out.json").toFile()), "UTF-8")) {
+            outputDirectory.resolve("heps.json").toFile()), "UTF-8")) {
       writer.write(json);
     }
   }

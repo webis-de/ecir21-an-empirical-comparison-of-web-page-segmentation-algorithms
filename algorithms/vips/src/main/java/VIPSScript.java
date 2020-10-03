@@ -7,9 +7,12 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.file.Path;
+import java.nio.file.Files;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -37,13 +40,18 @@ public class VIPSScript extends InteractionScript {
   public VIPSScript(final Path scriptDirectory)
   throws IOException {
     super(scriptDirectory);
+    LOG.info("Loading VIPS configuration");
+    final Properties vipsConfiguration = new Properties();
+    try (final InputStream vipsConfigurationStream =
+      Files.newInputStream(scriptDirectory.resolve("vips.conf"))) {
+        vipsConfiguration.load(vipsConfigurationStream);
+    }
 
-    LOG.info("Loading pDoC from pdoc.txt");
-    this.pDoC = Integer.valueOf(new Scanner(scriptDirectory.resolve("pdoc.txt")).useDelimiter("\\A").next());
+    this.pDoC = Integer.valueOf(vipsConfiguration.getProperty("pdoc"));
     LOG.info("Permitted Degree of Coherence is " + this.pDoC);
 
     LOG.info("Loading VIPS script");
-    this.vipsJs = new Scanner(scriptDirectory.resolve("vipsjs.js")).useDelimiter("\\A").next()
+    this.vipsJs = new Scanner(scriptDirectory.resolve("vips.js")).useDelimiter("\\A").next()
       + "\nvar tester = new VipsTester();\nreturn tester.main(\"TBFWID\"," + this.pDoC + ");";
   }
   

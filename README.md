@@ -30,15 +30,13 @@ Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
 ### VIPS
 We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpopela/vips_java), transpiled to JavaScript. We thank the original author for providing his implementation.
 
-The main JavaScript file is the [vipsjs.js](algorithms/vips/scripts/VIPSScript-1.0.0/vipsjs.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/vips/compile.sh) to re-compile the Java part that loads the VIPS implementation.
+The implementation is in the [vips.js](algorithms/vips/scripts/VIPSScript-1.0.0/vips.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/vips/compile.sh) to re-compile the Java part that controls the browser and executes the VIPS JavaScript (re-compilation requires a Java 8 JDK or above installed).
+
+Set the PDoC parameter by changing the value in the [vips.conf](algorithms/vips/scripts/VIPSScript-1.0.0/vips.conf).
 
 #### Preparation:
   - Install [Docker](https://www.docker.com/)
-  - If you want to re-compile the Java part, install a Java Development Kit (JDK), such as [OpenJDK](https://openjdk.java.net); e.g. for Debian/Ubuntu: `sudo apt install default-jdk`
   - In a shell, go to the directory that contains this README.
-
-#### Configuration:
-Set the PDoC parameter by changing the value in the [pdoc.txt](algorithms/vips/scripts/VIPSScript-1.0.0/pdoc.txt).
 
 #### Execution:
 You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
@@ -60,67 +58,22 @@ Rscript cikm20/src/main/r/flatten-segmentations.R \
 ### HEPS
 We use a slightly modified version of Manabe et al.'s [HEPS implementation](https://github.com/tmanabe/HEPS) that outputs bounding box coordinates instead of text segments. We thank the original authors for providing their implementation.
 
+The implementation is in the [heps.js](algorithms/heps/scripts/HEPSScript-1.0.0/heps.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/heps/compile.sh) to re-compile the Java part that controls the browser and executes the HEPS JavaScript (re-compilation requires a Java 8 JDK or above installed).
+
 #### Preparation:
-
-##### Prerequisites
-See the [VIPS prerequisites](#prerequisites).
-
-##### Building the script
-
-The script must be supplied to the reproduction environment as a JAR file.
-
-- Compile [`HEPSScript.java`](algorithms/heps/HEPSScript.java)
-
-```
-javac -cp "webis-web-archiver.jar:." \
-  --release 8 \
-  algorithms/heps/HEPSScript.java
-```
-
-- Create the appropriate directory for the script
-
-```
-mkdir -p scripts/HEPSScript-1.0.0
-```
-
-- Assemble the JAR
-
-```
-jar cfM scripts/HEPSScript-1.0.0/HEPSScript.jar \
-  -C algorithms/heps HEPSScript.class \
-  -C algorithms/heps HEPS.user.js
-```
-
-- Place the supplied `script.conf` alongside `HEPSScript.jar`
-
-```
-cp algorithms/heps/script.conf scripts/HEPSScript-1.0.0/
-```
+  - Install [Docker](https://www.docker.com/)
+  - In a shell, go to the directory that contains this README.
 
 #### Execution:
-
-As the reproduction environment has no knowledge of the page ID, the output file is initially named `out.json` and the `id` field therein contains the placeholder string `TBFWID`.
-
-- Create the segmentation:
-
+You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
 ```
-webis-web-archiver-master/src-bash/reproduce.sh \
-  --archive webis-web-archive-17/pages/000000 \
+# Execute HEPS while reproducing the web page from the archive
+./algorithms/heps/heps.sh \
+  --archive webis-web-archive-17/pages/000000/ \
   --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
-  --script HEPSScript \
-  --scriptsdirectory scripts \
+  --id 000000 \
   --output segmentations
 ```
-
-For segmenting other pages from webis-web-archive-17, you may find the corresponding URLs in the `sites-and-pages.txt` file supplied there.
-
-- Insert the ID and rename the output file
-
-```
-sed s/TBFWID/000000/ < segmentations/script/out.json > segmentations/heps.json
-```
-
-The `segmentations/logs` and `segmentations/script` folder can then be safely deleted.
 
 
 ### Cormier et al.
