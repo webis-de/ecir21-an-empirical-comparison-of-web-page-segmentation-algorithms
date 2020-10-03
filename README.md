@@ -16,10 +16,8 @@ The instructions here use the page with ID 000000 so that they work with the sam
 ### Baseline
 The baseline creates a single segment that contains the entire web page.
 
-#### Preparation:
   - In a shell, go to the directory that contains this README.
 
-#### Execution:
 ```
 Rscript algorithms/baseline/src/main/r/segmentation-baseline.R \
   --input webis-webseg-20/000000/screenshot.png \
@@ -34,11 +32,9 @@ The implementation is in the [vips.js](algorithms/vips/scripts/VIPSScript-1.0.0/
 
 Set the PDoC parameter by changing the value in the [vips.conf](algorithms/vips/scripts/VIPSScript-1.0.0/vips.conf).
 
-#### Preparation:
   - Install [Docker](https://www.docker.com/)
   - In a shell, go to the directory that contains this README.
 
-#### Execution:
 You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
 ```
 # Execute VIPS while reproducing the web page from the archive
@@ -60,11 +56,9 @@ We use a slightly modified version of Manabe et al.'s [HEPS implementation](http
 
 The implementation is in the [heps.js](algorithms/heps/scripts/HEPSScript-1.0.0/heps.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/heps/compile.sh) to re-compile the Java part that controls the browser and executes the HEPS JavaScript (re-compilation requires a Java 8 JDK or above installed).
 
-#### Preparation:
   - Install [Docker](https://www.docker.com/)
   - In a shell, go to the directory that contains this README.
 
-#### Execution:
 You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
 ```
 # Execute HEPS while reproducing the web page from the archive
@@ -120,7 +114,6 @@ Todo: Johannes
 
 
 ## Evaluation
-#### Preparation:
   - If it does not exist yet, create the directory `results` next to this README.
   - In a shell, go to the directory that contains this README.
 
@@ -132,8 +125,7 @@ Rscript cikm20/src/main/r/plot-segmentations.R \
   --output results/ground-truth.png
 ```
 
-#### Execution (exemplified for the algorithm 'baseline'):
-The segmentation of the algorithm should be now contained in a JSON file `segmentations/baseline.json`. If not, run the algorithm as described above.
+The segmentation of the algorithm should be contained in a JSON file `segmentations/baseline.json`. If not, run the algorithm as described above.
 ```
 # Show the segmentation
 #  - Produces results/baseline.png
