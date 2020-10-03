@@ -8,7 +8,7 @@ Outline:
   - [Plotting Segmentations](#plotting-segmentations): visually checking on segmentations
 
 ## Common Preparations
-  - Check out this repository
+  - Check out this repository.
   - If not done already, get the [source code](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/archive/master.zip) of the evaluation framework paper, extract it next to this README, and rename the extracted directory (`cikm20-web-page-...`) to `cikm20`.
   - Make sure your system fulfills all the [requirements of the evaluation framework](https://github.com/webis-de/cikm20-web-page-segmentation-revisited-evaluation-framework-and-dataset/tree/235bb0b1b673da351e267b3966da811021c20e63#requirements).
   - If it does not exist yet, create the directory `segmentations` next to this README.
@@ -39,7 +39,7 @@ The implementation is in the [vips.js](algorithms/vips/scripts/VIPSScript-1.0.0/
 
 Set the PDoC parameter by changing the value in the [vips.conf](algorithms/vips/scripts/VIPSScript-1.0.0/vips.conf).
 
-  - Install [Docker](https://www.docker.com/)
+  - Install [Docker](https://www.docker.com/).
   - In a shell, go to the directory that contains this README.
 
 You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
@@ -63,7 +63,7 @@ We use a slightly modified version of Manabe et al.'s [HEPS implementation](http
 
 The implementation is in the [heps.js](algorithms/heps/scripts/HEPSScript-1.0.0/heps.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/heps/compile.sh) to re-compile the Java part that controls the browser and executes the HEPS JavaScript (re-compilation requires a Java 8 JDK or above installed).
 
-  - Install [Docker](https://www.docker.com/)
+  - Install [Docker](https://www.docker.com/).
   - In a shell, go to the directory that contains this README.
 
 You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
@@ -78,37 +78,28 @@ You can find the corresponding URL for an archive of the webis-web-archive-17 in
 
 
 ### Cormier et al.
-
 We use a Python implementation graciously provided by [Michael Cormier](https://cs.uwaterloo.ca/~m4cormie/) and Zhuofu Tao, to whom we express our gratitude.
 
-#### Preparation:
-
-  - Install [Python 3](https://www.python.org/downloads/)
-    - e.g. for Debian/Ubuntu: `sudo apt install python3`
-  - Install `pip3`
-    - e.g. for Debian/Ubuntu: `sudo apt install python3-pip`
-  - If it does not exist yet, create the directory `segmentations` next to this README.
-  - In a shell, go to the directory that contains this README.
-  - Install the required Python packages:
-
-  ```
-  pip3 install -r algorithms/cormier/requirements.txt
-  ```
-
-#### Execution:
-
-```
-python3 algorithms/cormier/cormier.py webis-webseg-20/000000/screenshot.png 000000
-```
-where `000000` is the ID and output name, resulting in the output file `000000.json` with the `id` field set to `000000`.
-
 You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algorithms/cormier/cormier.py).
+
+  - Install [Python 3](https://www.python.org/downloads/) (e.g., for Debian/Ubuntu: `sudo apt install python3`).
+  - Install `pip3` (e.g., for Debian/Ubuntu: `sudo apt install python3-pip`).
+  - In a shell, go to the directory that contains this README.
+  - Install the required Python packages: `pip3 install -r algorithms/cormier/requirements.txt`.
+
+```
+python3 algorithms/cormier/cormier.py webis-webseg-20/000000/screenshot.png 000000 segmentations
+```
+where `000000` is the ID and `segmentations` the name of the output directory.
+
 
 ### MMDetection
 Todo: Lars
 
+
 ### Meier et al.
 Todo: Lars
+
 
 ### Ensemble
 Todo: Johannes

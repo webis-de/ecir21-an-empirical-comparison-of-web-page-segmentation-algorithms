@@ -242,13 +242,13 @@ edge_list = []
 #    s_list, pic = segment(file_name)
 #    cv2.imwrite(str(file_name[:-4] + "_marked.png"), _mark_edges(pic, edge_list))
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Invalid number of arguments.")
-    print("Usage: python3 " + sys.argv[0] + " <image> <id>")
+    print("Usage: python3 " + sys.argv[0] + " <image> <id> <output-directory>")
     sys.exit(1)
 
 try:
-    outfile = open("./" + sys.argv[2] + ".json", 'w')
+    outfile = open(sys.argv[3] + "/cormier.json", 'w')
     s_list, pic = segment(sys.argv[1])
 
     polygon_list = []
@@ -263,4 +263,4 @@ try:
     out_obj = dict(height=pic.shape[0], width=pic.shape[1], id=sys.argv[2], segmentations=dict(cormier=polygon_list))
     json.dump(out_obj, outfile)
 except FileNotFoundError:
-    print("Unable to create file " + sys.argv[2] + ".json")
+    print("Unable to create file " + sys.argv[3] + "/cormier.json")
