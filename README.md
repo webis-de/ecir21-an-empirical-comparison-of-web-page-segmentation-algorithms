@@ -94,14 +94,33 @@ where `000000` is the ID and `segmentations` the name of the output directory.
 
 
 ### MMDetection
-Todo: Lars
+We use the [original implementation](https://github.com/open-mmlab/mmdetection) provided by the authors. The provided inference scripts are suitable for use with Nvidia GPUs. By default, the container uses the first available GPU.
 
   - Install [Docker](https://www.docker.com/).
   - Install the [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker).
   - Download the [pre-trained model](https://s3.ap-northeast-2.amazonaws.com/open-mmlab/mmdetection/models/htc/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth) and place it next to this README.
 
-### Meier et al.
+```
+# Infer segments for the screenshot from the sample archive.
+# Usage of infer_single.py: python infer_single.py <screenshot id>
+sudo nvidia-docker run -it \
+  -v "${PWD}/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth":"/resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth" \
+  -v ${PWD}/webis-webseg-20/:/pages \
+  -v ${PWD}/segmentations/mmdetection:/out \
+  webis/mmdetection19-web-page-segmentation \
+  python infer_single.py 000000
 
+# Infer segments for all screenshots.
+sudo nvidia-docker run -it \
+  -v ./htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth:/resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth \
+  -v ${PWD}/webis-webseg-20/:/pages \
+  -v ${PWD}/segmentations/mmdetection:/out \
+  webis/mmdetection19-web-page-segmentation \
+  python infer.py
+```
+
+
+### Meier et al.
 The neural network is implemented in [Keras](https://keras.io) using the [TensorFlow](https://www.tensorflow.org) backend. We provide a [Docker container]() that can be used to train the model and perform inference with Nvidia GPUs. By default, the container uses the first available GPU.
 
   - Install [Docker](https://www.docker.com/).
@@ -116,7 +135,7 @@ TODO: how/where to extract
 
 ```
 # Train the model across all 10 folds for a maximum of 100 Epochs
-# Usage of run.sh: bash run.sh <first fold> <last fold> <max. number of epochs>
+# Usage of train.sh: bash train.sh <first fold> <last fold> <max. number of epochs>
 sudo nvidia-docker run -it \
   -v <path>/<to>/meier17/data:/src/workspace/data \
   -e KERAS_BACKEND=tensorflow \
