@@ -19,6 +19,7 @@ do
 		then
 			for input in $inputs;
 			do
+        mkdir -p training/$input/cross-val-0;
 				cd training/$input/cross-val-0;
 				ln -s ../../../folds/$input/cross-val-${j}/* .;
 				cd ../../../;
@@ -27,9 +28,11 @@ do
 	done;
 	for input in $inputs;
 	do
+		mkdir -p validation/$input/cross-val-0;
 		cd validation/$input/cross-val-0;
 		ln -s ../../../folds/$input/cross-val-${val}/* .;
 		cd ../../../;
+		mkdir -p test/$input/cross-val-0;
 		cd test/$input/cross-val-0;
 		ln -s ../../../folds/$input/cross-val-${test}/* .;
 		cd ../../../;
@@ -39,9 +42,6 @@ do
 	cd /src/workspace/data/input;
 	for folder in $folders;
 	do
-		for input in $inputs;
-		do
-			rm $folder/$input/cross-val-0/*;
-		done;
+    rm -r $folder/$input;
 	done;
 done

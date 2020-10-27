@@ -110,6 +110,14 @@ nvidia-docker run -it \
   python infer_single.py 000000
 
 # Fit segments
+Rscript cikm20/src/main/r/fit-segmentations-to-dom-nodes.R \
+  --input segmentations/mmdetection/000000.json \
+  --segmentations mmdetection_bboxes \
+  --nodes webis-webseg-20/000000/nodes.csv \
+  --output segmentations/mmdetection.json
+
+# Rename segmentation
+sed -i 's/mmdetection_bboxes.fitted/mmdetection/' segmentations/mmdetection.json
 ```
 
 
@@ -130,7 +138,8 @@ TODO: how/where to extract
 # Train the model across all 10 folds for a maximum of 100 Epochs
 # Usage of train.sh: bash train.sh <first fold> <last fold> <max. number of epochs>
 sudo nvidia-docker run -it \
-  -v <path>/<to>/meier17/data:/src/workspace/data \
+  --rm -u $(id -u):$(id -g)
+  -v <path>/<to>/meier17-training/data:/src/workspace/data \
   -e KERAS_BACKEND=tensorflow \
   webis/meier17-web-page-segmentation \
   bash model/train.sh 0 9 100 > log.txt 2>&1
