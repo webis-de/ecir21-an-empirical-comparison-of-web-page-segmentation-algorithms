@@ -112,12 +112,12 @@ nvidia-docker run -it \
 # Fit segments
 Rscript cikm20/src/main/r/fit-segmentations-to-dom-nodes.R \
   --input segmentations/mmdetection/000000.json \
-  --segmentations mmdetection_bboxes \
+  --segmentations mmdetection_segms \
   --nodes webis-webseg-20/000000/nodes.csv \
   --output segmentations/mmdetection.json
 
 # Rename segmentation
-sed -i 's/mmdetection_bboxes.fitted/mmdetection/' segmentations/mmdetection.json
+sed -i 's/mmdetection_segms.fitted/mmdetection/' segmentations/mmdetection.json
 ```
 
 
