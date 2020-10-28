@@ -219,12 +219,12 @@ Rscript cikm20/src/main/r/combine-segmentation-files.R \
   segmentations/mmdetection.json \
   segmentations/all.json
 
-# Create the ensemble segmentation
+# Create the ensemble segmentation for Min-vote@2
 Rscript cikm20/src/main/r/fuse-segmentations.R \
   --input segmentations/all.json \
   --segments-min-annotators 2 \
   --size-function pixels \
-  --disagreement-threshold 0.5 \
+  --disagreement-threshold 0.375 \
   --output segmentations/ensemble.json
 ```
 
