@@ -1,4 +1,4 @@
-# Repository for the Paper "Reproducing Web Page Segmentation Algorithms"
+# Repository for the Paper "An Empirical Comparison of Web Page Segmentation Algorithms"
 This repository enables the reproduction of the experiments from the paper, but also to run the algorithms on new data.
 
 Outline:
