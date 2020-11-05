@@ -130,9 +130,7 @@ The neural network is implemented in [Keras](https://keras.io) using the [Tensor
 
 #### Training
 
-To train the model on [Webis-WebSeg-20](https://doi.org/10.5281/zenodo.3354902), you must download the TODO: [webis-webseg-20-meier.zip]() archive containing the prepared screenshots cropped/padded to 4096 px height, as well as ground truth annotation and DOM text node masks.
-
-TODO: how/where to extract
+To train the model on [Webis-WebSeg-20](https://doi.org/10.5281/zenodo.3354902), you must download the [meier17-training.zip](https://zenodo.org/record/4146890/files/meier17-training.zip?download=1) archive containing the prepared screenshots cropped/padded to 4096 px height, as well as ground truth annotation and DOM text node masks.
 
 ```
 # Train the model across all 10 folds for a maximum of 100 Epochs
