@@ -83,6 +83,8 @@ fi
 # Getting output segmentation (replacing ID)
 cat $output/script/heps.json \
   | sed "s/TBFWID/$id/" \
+  | sed 's/"\[/[/' \
+  | sed 's/\]"/]/' \
   > $output/heps.json
 rm -rf $output/script
 
