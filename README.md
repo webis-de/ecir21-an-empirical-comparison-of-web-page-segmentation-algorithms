@@ -40,7 +40,7 @@ The implementation is in the [vips.js](algorithms/vips/scripts/VIPSScript-1.0.0/
   - Install [Docker](https://www.docker.com/).
   - In a shell, go to the directory that contains this README.
 
-You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
+You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quite some time to download when you run it the first time.
 ```
 # Execute VIPS while reproducing the web page from the archive
 ./algorithms/vips/vips.sh \
@@ -65,7 +65,7 @@ The implementation is in the [heps.js](algorithms/heps/scripts/HEPSScript-1.0.0/
   - Install [Docker](https://www.docker.com/).
   - In a shell, go to the directory that contains this README.
 
-You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quiet some time to download when you run it the first time.
+You can find the corresponding URL for an archive of the webis-web-archive-17 in the [sites-and-pages.txt](https://zenodo.org/record/4064019/files/sites-and-pages.txt). Note that the docker image may take quite some time to download when you run it the first time.
 ```
 # Execute HEPS while reproducing the web page from the archive
 ./algorithms/heps/heps.sh \
