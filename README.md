@@ -37,8 +37,6 @@ We use a TypeScript port of Tomáš Popela's [vips_java](https://github.com/tpop
 
 The implementation is in the [vips.js](algorithms/vips/scripts/VIPSScript-1.0.0/vips.js). This file is loaded into the webis-web-archiver to run on web pages that are reproduced from web archives. If needed, you can use the [compile.sh](algorithms/vips/compile.sh) to re-compile the Java part that controls the browser and executes the VIPS JavaScript (re-compilation requires a Java 8 JDK or above installed).
 
-Set the PDoC parameter by changing the value in the [vips.conf](algorithms/vips/scripts/VIPSScript-1.0.0/vips.conf).
-
   - Install [Docker](https://www.docker.com/).
   - In a shell, go to the directory that contains this README.
 
@@ -47,6 +45,7 @@ You can find the corresponding URL for an archive of the webis-web-archive-17 in
 # Execute VIPS while reproducing the web page from the archive
 ./algorithms/vips/vips.sh \
   --archive webis-web-archive-17/pages/000000/ \
+  --pdoc 5 \
   --url "http://008345152.blog.fc2.com/blog-date-201305.html" \
   --id 000000 \
   --output segmentations

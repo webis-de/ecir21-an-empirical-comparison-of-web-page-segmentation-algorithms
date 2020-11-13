@@ -47,8 +47,17 @@ public class VIPSScript extends InteractionScript {
         vipsConfiguration.load(vipsConfigurationStream);
     }
 
-    this.pDoC = Integer.valueOf(vipsConfiguration.getProperty("pdoc"));
-    LOG.info("Permitted Degree of Coherence is " + this.pDoC);
+    final int pDoCDefault = Integer.valueOf(vipsConfiguration.getProperty("pdoc"));
+    final String pDoCEnv = System.getenv("PDoC");
+    if (pDoCEnv == null) {
+      this.pDoC = pDoCDefault;
+      LOG.info("Permitted Degree of Coherence is " + this.pDoC
+        + " as per the configuration file");
+    } else {
+      this.pDoC = Integer.valueOf(pDoCEnv);
+      LOG.info("Permitted Degree of Coherence is " + this.pDoC
+        + " as per environment variable");
+    }
 
     LOG.info("Loading VIPS script");
     this.vipsJs = new Scanner(scriptDirectory.resolve("vips.js")).useDelimiter("\\A").next()
