@@ -1,4 +1,6 @@
 # Repository for the ECIR21 Reproducibility Paper "An Empirical Comparison of Web Page Segmentation Algorithms"
+Paper by Johannes Kiesel, Lars Meyer, Florian Kneist, Benno Stein, and Martin Potthast.
+
 This repository enables the reproduction of the experiments from the paper, but also to run the algorithms on new data.
 
 Outline:
