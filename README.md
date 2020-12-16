@@ -103,6 +103,7 @@ We use the [original implementation](https://github.com/open-mmlab/mmdetection) 
 
 ```
 # Infer segments for page with ID 000000 (use 'infer.py' to segment all)
+mkdir -p webis/mmdetection19-web-page-segmentation
 nvidia-docker run -it \
   -v "${PWD}/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth":"/resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth" \
   -v ${PWD}/webis-webseg-20/:/pages \
