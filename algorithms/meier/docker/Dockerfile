@@ -70,6 +70,6 @@ RUN pip install \
 
 ENV PYTHONPATH='/src/:$PYTHONPATH'
 
-WORKDIR /src/workspace
+WORKDIR /src/workspace/model
 
 COPY ./model /src/workspace/model

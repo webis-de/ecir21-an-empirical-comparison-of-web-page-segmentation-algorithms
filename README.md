@@ -1,4 +1,6 @@
-# Repository for the Paper "An Empirical Comparison of Web Page Segmentation Algorithms"
+# Repository for the ECIR21 Reproducibility Paper "An Empirical Comparison of Web Page Segmentation Algorithms"
+Paper by Johannes Kiesel, Lars Meyer, Florian Kneist, Benno Stein, and Martin Potthast.
+
 This repository enables the reproduction of the experiments from the paper, but also to run the algorithms on new data.
 
 Outline:
@@ -100,6 +102,7 @@ We use the [original implementation](https://github.com/open-mmlab/mmdetection) 
 
 ```
 # Infer segments for page with ID 000000 (use 'infer.py' to segment all)
+mkdir -p webis/mmdetection19-web-page-segmentation
 nvidia-docker run -it \
   -v "${PWD}/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth":"/resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth" \
   -v ${PWD}/webis-webseg-20/:/pages \

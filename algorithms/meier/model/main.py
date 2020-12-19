@@ -52,7 +52,7 @@ parser.add_argument("--single-augmentation", type=str, help="select a single aug
 parser.add_argument("--cross-val-fold", type=int, help="which fold; k-fold cross validation (0,1, ..., 9)")
 args = parser.parse_args()
 
-output_folder = '../data/output'
+output_folder = '../data/output' + str(getattr(args, 'cross_val_fold'))
 input_folder = '../data/input'
 
 first_results_folder = output_folder + '/results-' + '1'.zfill(7) + '/'
