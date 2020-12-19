@@ -87,9 +87,8 @@ You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algori
   - Install the required Python packages: `pip3 install -r algorithms/cormier/requirements.txt`.
 
 ```
-python3 algorithms/cormier/cormier.py webis-webseg-20/000000/screenshot.png 000000 segmentations
+python3 algorithms/cormier/cormier.py --image webis-webseg-20/000000/screenshot.png --id 000000 --output segmentations
 ```
-where `000000` is the ID and `segmentations` the name of the output directory.
 
 
 ### MMDetection

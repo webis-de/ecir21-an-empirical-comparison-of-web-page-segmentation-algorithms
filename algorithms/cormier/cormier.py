@@ -9,6 +9,8 @@ import cv2
 import sys
 import json
 
+import argparse
+
 # Label line directions
 horiz = 0
 vert = 1
@@ -18,10 +20,10 @@ dir_v = 1
 v_filter = np.multiply(np.array([[1], [2], [1]]), np.array([[-1, 0, 1]]))
 h_filter = np.transpose(v_filter)
 # Set parameters
-min_l = 45 # Minimum size of a region; also half-window width (tested with: 45, 90)
+min_l = 15 # Minimum size of a region; also half-window width
 threshold = 0.5 # Threshold probability to accept a line as semantically significant
 prior = 0.01 # Prior probability that a given pixel is an edge
-line_length = 256 # Maximum line segment length for recursion base case in probability calculation (tested with: 256, 512)
+line_length = 256 # Maximum line segment length for recursion
 mcs_rp = 100 # Trials for Monte Carlo simulation (lower than original papers, but seems to work fine)
 mcs_prob = 0.3 # Minimum proportion of locally significant edges in Monte Carlo trials
 
@@ -90,8 +92,7 @@ def cdf(h, v):
     res_h, res_v = np.ones_like(h, dtype='float'), np.ones_like(v, dtype='float')
     nrows, ncols = len(h), len(v[0])
     for i in range(0, nrows):
-        if i % 100 == 0:
-            print("cdf", i)
+        print("cdf row", i)
         for j in range(0, ncols):
             bound_t = max(0, i - min_l)
             bound_b = min(ncols, i + min_l + 1)
@@ -236,20 +237,21 @@ def _mark_edges(data, edges):
 
 edge_list = []
 
-#demo_file_names = ["class_85_img.png"]
-#for demo_file_name in demo_file_names:
-#    file_name = "../data/demo/" + demo_file_name
-#    s_list, pic = segment(file_name)
-#    cv2.imwrite(str(file_name[:-4] + "_marked.png"), _mark_edges(pic, edge_list))
 
-if len(sys.argv) != 4:
-    print("Invalid number of arguments.")
-    print("Usage: python3 " + sys.argv[0] + " <image> <id> <output-directory>")
-    sys.exit(1)
+parser = argparse.ArgumentParser(description='Segmentation algorithm of Cormier et al.')
+parser.add_argument('--image', help="The screenshot of the web page", required=True)
+parser.add_argument('--id', help="The ID of the web page", required=True)
+parser.add_argument('--output', dest="output_directory", help="The output directory for the segmentation", required=True)
+parser.add_argument('--min-l', dest="min_l", type=int, default=min_l, help="The minimum size of a region (default: " + str(min_l) + ")")
+parser.add_argument('--line-length', dest="line_length", type=int, default=line_length, help="The maximum line segment length for recursion (default: " + str(line_length) + ")")
+args = parser.parse_args()
+
+min_l = args.min_l
+line_length = args.line_length
 
 try:
-    outfile = open(sys.argv[3] + "/cormier.json", 'w')
-    s_list, pic = segment(sys.argv[1])
+    outfile = open(args.output_directory + "/cormier.json", 'w')
+    s_list, pic = segment(args.image)
 
     polygon_list = []
     for segment in s_list:
@@ -260,7 +262,7 @@ try:
 
         polygon_list.append([[[[left, top], [left, bottom], [right, bottom], [right, top], [left, top]]]])
 
-    out_obj = dict(height=pic.shape[0], width=pic.shape[1], id=sys.argv[2], segmentations=dict(cormier=polygon_list))
+    out_obj = dict(height=pic.shape[0], width=pic.shape[1], id=args.id, segmentations=dict(cormier=polygon_list))
     json.dump(out_obj, outfile)
 except FileNotFoundError:
-    print("Unable to create file " + sys.argv[3] + "/cormier.json")
+    print("Unable to create file " + args.output_directory + "/cormier.json")
