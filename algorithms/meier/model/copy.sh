@@ -22,4 +22,4 @@ while IFS= read -r line;
 do
     cp ${RESULT_FOLDER}/`printf %06d $k`.png ${OUTPUT_FOLDER}/${line}
     let "k=k+1"
-done < <(ls -l ${FOLD_FOLDER}/*.png | awk -F'/' '{ print $6 }')
+done < <(ls -l ${FOLD_FOLDER}/*.png | sed 's/.*\///')

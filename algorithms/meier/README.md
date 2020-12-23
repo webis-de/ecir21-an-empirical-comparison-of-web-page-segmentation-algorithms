@@ -9,7 +9,7 @@ Build the docker image
 ----------------------
 You probably don't need to do this, as the image is hosted on [dockerhub](https://hub.docker.com/r/webis/meier17-web-page-segmentation) and Docker will automatically fetch it from there.
 ```
-sudo docker build -f docker/Dockerfile . -t webis/meier17-web-page-segmentation:1.0.3
+sudo docker build -f docker/Dockerfile . -t webis/meier17-web-page-segmentation:1.0.4
 ```
 
 Setup directory structure
@@ -55,6 +55,6 @@ gpu=0 # The ID of the GPU to use
 fold=0 # The fold left for testing
 batch_size=16 # decrease for smaller GPUs, increase for larger ones
 epochs=100 # maximum number of epochs for training
-nvidia-docker run -it --rm -u $(id -u):$(id -g) --env NVIDIA_VISIBLE_DEVICES=$gpu -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data -e KERAS_BACKEND=tensorflow webis/meier17-web-page-segmentation:1.0.3 python main.py --batch-size=$batch_size --epochs=$epochs --cross-val-fold=$fold 1> log$fold.txt 2>&1
+nvidia-docker run -it --rm -u $(id -u):$(id -g) --env NVIDIA_VISIBLE_DEVICES=$gpu -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data -e KERAS_BACKEND=tensorflow webis/meier17-web-page-segmentation:1.0.4 python main.py --batch-size=$batch_size --epochs=$epochs --cross-val-fold=$fold 1> log$fold.txt 2>&1
 ```
 
