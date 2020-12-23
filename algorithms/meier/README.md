@@ -12,12 +12,6 @@ You probably don't need to do this, as the image is hosted on [dockerhub](https:
 sudo docker build -f docker/Dockerfile . -t webis/meier17-web-page-segmentation:1.0.4
 ```
 
-Setup directory structure
--------------------------
-The algorithm expects a specific directory structure for training and testing:
-  - Download the `webis-webseg-20-folds.txt` and `webis-webseg-20-4096px.zip` from [Zenodo](https://doi.org/10.5281/zenodo.4146889) and extract the ZIP file.
-  - Use `./setup-directories.sh <path/to/extracted/webis-webseg-20> <path/to/webis-webseg-20-folds.txt>`. The directory structure will be created in `./webis-webseg-20-meier`.
-
 ### Re-creation
 If you want to re-create the data instead of downloading it, use these commands (the use of `optipng` is optional, but greatly reduces the size of the PNG files):
 
@@ -47,7 +41,7 @@ Rscript path/to/cikm20-web-page-segmentation-revisited-evaluation-framework-and-
 
 Train the model
 ---------------
-You first need to [setup the directory structure](#setup-directory-structure).
+You first need to [setup the directory structure](../../README.md#meier-et-al).
 
 For each fold number (0 to 9), you can train the corresponding model like this:
 ```
