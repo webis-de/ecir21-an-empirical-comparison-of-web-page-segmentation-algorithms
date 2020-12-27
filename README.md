@@ -89,7 +89,10 @@ You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algori
   - Install the required Python packages: `pip3 install -r algorithms/cormier/requirements.txt`.
 
 ```
-python3 algorithms/cormier/cormier.py --image webis-webseg-20/000000/screenshot.png --id 000000 --output segmentations
+python3 algorithms/cormier/cormier.py \
+  --image webis-webseg-20/000000/screenshot.png \
+  --id 000000 \
+  --output segmentations
 ```
 
 
@@ -140,7 +143,17 @@ Instructions to create the input files and to train the models are provided in o
 # Run the algorithm on all screenshots of a fold, resizes the output to the original size, and extracts the segments from the masks.
 gpu=0 # The ID of the GPU to use
 fold=0 # Do this for each integer from 0 to 9
-sudo nvidia-docker run -it --rm -u $(id -u):$(id -g) --env NVIDIA_VISIBLE_DEVICES=$gpu -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data -e KERAS_BACKEND=tensorflow webis/meier17-web-page-segmentation:1.0.4 ./test.sh ../data/input/test/ $fold ../data/webis-webseg-20-meier-models/model-fold$fold-weights.h5 ../data/segmentations-fold$fold
+sudo nvidia-docker run \
+  -it --rm -u $(id -u):$(id -g) \
+  --env NVIDIA_VISIBLE_DEVICES=$gpu \
+  --env KERAS_BACKEND=tensorflow \
+  -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data \
+  webis/meier17-web-page-segmentation:1.0.4 \
+  ./test.sh \
+    ../data/input/test/ \
+    $fold \
+    ../data/webis-webseg-20-meier-models/model-fold$fold-weights.h5 \
+    ../data/segmentations-fold$fold
 ```
 
 
