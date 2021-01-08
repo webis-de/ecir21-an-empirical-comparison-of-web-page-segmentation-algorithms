@@ -13,27 +13,16 @@ import os
 from glob import glob
 from re import search
 
-if len(sys.argv) != 4:
-    print("Usage: python " + sys.argv[0] + " <input_folder> <fold> <weights_file>")
+if len(sys.argv) != 5:
+    print("Usage: python " + sys.argv[0] + " <input_folder> <fold> <weights_file> <output_folder>")
     sys.exit(1)
 
-output_folder = '../data/output'
 input_folder = sys.argv[1]
 fold = sys.argv[2]
 input_files = glob(input_folder + '/screenshots/cross-val-' + fold + "/*.png")
 input_files_num = len(input_files)
 
-first_results_folder = output_folder + '/results-' + '1'.zfill(7) + '/'
-folder = ''
-
-if not os.path.exists(first_results_folder):
-    os.makedirs(first_results_folder)
-    folder = first_results_folder
-else:
-    output_folders = glob(output_folder + '/results-*')
-    output_folders.sort()
-    output_folders_num = str(int(search('\d+', output_folders[-1])[0]) + 1)
-    folder = output_folder + '/results-' + output_folders_num.zfill(7) + '/'
+folder = sys.argv[4]
 
 setup_folders.create(folder)
 

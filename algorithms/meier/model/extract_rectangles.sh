@@ -2,6 +2,7 @@
 
 INPUT_FOLDER=${1%/}
 OUTPUT_FOLDER=${2%/}
+SRC_FOLDER=$(dirname $0)
 
 if [ $# -ne 2 ]
 then
@@ -20,5 +21,5 @@ do
   FILENAME=$(basename ${i})
   OUTNAME=${FILENAME%.*}
   echo "Extracting bounding boxes for" "$i" "to" "${OUTPUT_FOLDER}/${OUTNAME}.json"
-  python /src/workspace/model/extract_rectangles.py "$i" "${OUTPUT_FOLDER}/${OUTNAME}.json"
+  python $SRC_FOLDER/extract_rectangles.py "$i" "${OUTPUT_FOLDER}/${OUTNAME}.json"
 done

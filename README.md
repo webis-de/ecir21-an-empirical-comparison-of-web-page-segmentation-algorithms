@@ -89,7 +89,10 @@ You may adjust the `min_l` and `line_length` parameters in [`cormier.py`](algori
   - Install the required Python packages: `pip3 install -r algorithms/cormier/requirements.txt`.
 
 ```
-python3 algorithms/cormier/cormier.py --image webis-webseg-20/000000/screenshot.png --id 000000 --output segmentations
+python3 algorithms/cormier/cormier.py \
+  --image webis-webseg-20/000000/screenshot.png \
+  --id 000000 \
+  --output segmentations
 ```
 
 
@@ -123,83 +126,34 @@ sed -i 's/mmdetection_segms.fitted/mmdetection/' segmentations/mmdetection.json
 
 
 ### Meier et al.
-The neural network is implemented in [Keras](https://keras.io) using the [TensorFlow](https://www.tensorflow.org) backend. We provide a [Docker container]() that can be used to train the model and perform inference with Nvidia GPUs. By default, the container uses the first available GPU.
+The neural network is implemented in [Keras](https://keras.io) using the [TensorFlow](https://www.tensorflow.org) backend. We provide a [Docker container](https://hub.docker.com/layers/webis/meier17-web-page-segmentation/1.0.4/images/sha256-24ee082e1bee6f20b5e41140d081a52e5048298ff56e59a634a00239960d68db?context=explore) that can be used to train the model and perform inference with Nvidia GPUs. By default, the container uses the first available GPU.
 
   - Install [Docker](https://www.docker.com/).
   - Install the [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker).
   - In a shell, go to the directory that contains this README.
 
-#### Training
+The algorithm expects a specific directory structure for training and testing:
+  - Download the `webis-webseg-20-folds.txt` and `webis-webseg-20-4096px.zip` from [Zenodo](https://doi.org/10.5281/zenodo.4146889) and extract the ZIP file.
+  - Use `./algorithms/meier/setup-directories.sh <path/to/extracted/webis-webseg-20> <path/to/webis-webseg-20-folds.txt>`. The directory structure will be created in `./webis-webseg-20-meier`.
+  - Download the `webis-webseg-20-meier-models.zip` from [Zenodo](https://doi.org/10.5281/zenodo.4146889) and extract it into the created `./webis-webseg-20-meier` directory.
 
-To train the model on [Webis-WebSeg-20](https://doi.org/10.5281/zenodo.3354902), you must download the [meier17-training.zip](https://zenodo.org/record/4146890/files/meier17-training.zip?download=1) archive containing the prepared screenshots cropped/padded to 4096 px height, as well as ground truth annotation and DOM text node masks.
-
-```
-# Train the model across all 10 folds for a maximum of 100 Epochs
-# Usage of train.sh: bash train.sh <first fold> <last fold> <max. number of epochs>
-sudo nvidia-docker run -it \
-  --rm -u $(id -u):$(id -g)
-  -v <path>/<to>/meier17-training/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  bash model/train.sh 0 9 100 > log.txt 2>&1
-```
-
-The file `log.txt` then contains a log of the training process. From this, you can identify the total number of epochs trained for each fold. Each fold will output to a sequentially numbered folder in `meier17/data/output`. Saved weights for each epoch are sequentially numbered and contained in the subfolder `weights`. The best-performing weights for a fold are either contained in the epoch weights file 10 epochs before the last (as the `EarlyStopping` callback is used with a `patience` parameter of 10), or the last epoch weights file if the epoch limit specified in the command above has been reached.
-
-#### Inference
+Instructions to create the input files and to train the models are provided in our [README for the algorithm](algorithms/meier/README.md).
 
 ```
-# Infers segmentation for all images in fold 0 using the specified weight file
-# Usage of test.py: python model/test.py <folder containing input folds> <fold number> <weights file>
-sudo nvidia-docker run -it \
-  -v ${PWD}/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  python model/test.py data/input/folds/ 0 data/output/results-0000001/weights/epoch-0000000-weights.h5
-```
-
-The images will appear in the output folder (`results-XXXXXXX`) sequentially numbered in the order of their appearance in the input folder. They can be copied to their original filenames with the included [`copy.sh`](algorithms/meier/model/copy.sh) script.
-
-```
-# Copies all images in the specified result directory based on the fold's screenshot names they were inferred from to the target directory.
-# Usage of copy.sh: bash copy.sh <fold directory> <result directory> <target directory>
-sudo nvidia-docker run -it \
-  -v ${PWD}/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  bash model/copy.sh data/input/folds/screenshots/cross-val-0 data/output/results-0000001 data/output/renamed
-```
-
-As the output images are of size 256x768 px, they must be resized before extracting the rectangles into the evaluation JSON format with the included [`resize.sh`](algorithms/meier/model/resize.sh).
-
-```
-# Resizes all images in the specified input folder, writing them into the given output folder.
-# Usage of resize.sh: bash resize.sh <directory containing input pngs> <target directory>
-sudo nvidia-docker run -it \
-  -v ${PWD}/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  bash model/resize.sh data/output/renamed data/output/resized
-```
-
-Finally, the bounding boxes of segmented areas can be extracted into the evaluation JSON format using [`extract_rectangles.py`](algorithms/meier/model/extract_rectangles.py). The process can be automated for an entire folder with the included [`extract_rectangles.sh`](algorithms/meier/model/extract_rectangles.sh) script.
-
-```
-# Extract rectangles of one resized output image.
-# Usage of extract_rectangles.py: python3 extract_rectangles.py <input png> <output json>
-sudo nvidia-docker run -it \
-  -v ${PWD}/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  python3 model/extract_rectangles.py data/output/resized/000000.png data/output/json/000000.json
-
-# Extract bounding boxes for a folder of resized output images.
-# Usage of extract_rectangles.sh: bash extract_rectangles.sh <directory containing input pngs> <target directory>
-sudo nvidia-docker run -it \
-  -v ${PWD}/data:/src/workspace/data \
-  -e KERAS_BACKEND=tensorflow \
-  webis/meier17-web-page-segmentation \
-  bash model/extract_rectangles.sh data/output/resized data/output/json
+# Run the algorithm on all screenshots of a fold, resizes the output to the original size, and extracts the segments from the masks.
+gpu=0 # The ID of the GPU to use
+fold=0 # Do this for each integer from 0 to 9
+sudo nvidia-docker run \
+  -it --rm -u $(id -u):$(id -g) \
+  --env NVIDIA_VISIBLE_DEVICES=$gpu \
+  --env KERAS_BACKEND=tensorflow \
+  -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data \
+  webis/meier17-web-page-segmentation:1.0.4 \
+  ./test.sh \
+    ../data/input/test/ \
+    $fold \
+    ../data/webis-webseg-20-meier-models/model-fold$fold-weights.h5 \
+    ../data/segmentations-fold$fold
 ```
 
 

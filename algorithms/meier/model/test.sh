@@ -1,12 +1,14 @@
-#!/bin/sh
+#!/bin/bash
+input=$1
+fold=$2
+weights=$3
+output=$4
+tmp_output=$output.tmp/
+tmp_output_renamed=$output.renamed.tmp/
+tmp_output_resized=$output.resized.tmp/
 
-python test.py ../data/input/folds/ 0 ../data/output/results-0000132/weights/epoch-00000026-weights.h5
-python test.py ../data/input/folds/ 1 ../data/output/results-0000118/weights/epoch-00000040-weights.h5
-python test.py ../data/input/folds/ 2 ../data/output/results-0000120/weights/epoch-00000033-weights.h5
-python test.py ../data/input/folds/ 3 ../data/output/results-0000122/weights/epoch-00000029-weights.h5
-python test.py ../data/input/folds/ 4 ../data/output/results-0000123/weights/epoch-00000090-weights.h5
-python test.py ../data/input/folds/ 5 ../data/output/results-0000125/weights/epoch-00000027-weights.h5
-python test.py ../data/input/folds/ 6 ../data/output/results-0000127/weights/epoch-00000064-weights.h5
-python test.py ../data/input/folds/ 7 ../data/output/results-0000128/weights/epoch-00000084-weights.h5
-python test.py ../data/input/folds/ 8 ../data/output/results-0000130/weights/epoch-00000023-weights.h5
-python test.py ../data/input/folds/ 9 ../data/output/results-0000131/weights/epoch-00000030-weights.h5
+python test.py $input $fold $weights $tmp_output
+./copy.sh $input/screenshots/cross-val-$fold $tmp_output $tmp_output_renamed
+./resize.sh $tmp_output_renamed $tmp_output_resized
+./extract_rectangles.sh $tmp_output_resized $output/
+
