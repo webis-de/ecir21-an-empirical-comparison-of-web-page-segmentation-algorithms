@@ -122,6 +122,11 @@ Rscript cikm20/src/main/r/fit-segmentations-to-dom-nodes.R \
 
 # Rename segmentation
 sed -i 's/mmdetection_segms.fitted/mmdetection/' segmentations/mmdetection.json
+
+# Convert hierarchical segmentation to a flat one
+Rscript cikm20/src/main/r/flatten-segmentations.R \
+  --input segmentations/mmdetection.json \
+  --output segmentations/mmdetection-flattened.json
 ```
 
 
