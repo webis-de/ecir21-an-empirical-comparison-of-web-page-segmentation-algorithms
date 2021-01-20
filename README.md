@@ -178,11 +178,12 @@ Rscript cikm20/src/main/r/combine-segmentation-files.R \
   segmentations/all.json
 
 # Create the ensemble segmentation for Min-vote@2
+# Note that the implementation uses a *dis*agreement-threshold, thus use 1 - \theta_s of the paper!
 Rscript cikm20/src/main/r/fuse-segmentations.R \
   --input segmentations/all.json \
   --segments-min-annotators 2 \
   --size-function pixels \
-  --disagreement-threshold 0.375 \
+  --disagreement-threshold 0.625 \
   --output segmentations/ensemble.json
 ```
 
