@@ -1,0 +1,6 @@
+# Based on https://github.com/open-mmlab/mmdetection/blob/master/docker/Dockerfile
+
+FROM webis/mmdetection19-web-page-segmentation
+
+COPY htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth /resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth
+

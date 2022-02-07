@@ -101,16 +101,13 @@ We use the [original implementation](https://github.com/open-mmlab/mmdetection) 
 
   - Install [Docker](https://www.docker.com/).
   - Install the [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker).
-  - Download the [pre-trained model](https://s3.ap-northeast-2.amazonaws.com/open-mmlab/mmdetection/models/htc/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth) and place it next to this README.
 
 ```
 # Infer segments for page with ID 000000 (use 'infer.py' to segment all)
-mkdir -p webis/mmdetection19-web-page-segmentation
 nvidia-docker run -it \
-  -v "${PWD}/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth":"/resources/checkpoints/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_20190408-0e50669c.pth" \
   -v ${PWD}/webis-webseg-20/:/pages \
   -v ${PWD}/segmentations/mmdetection:/out \
-  webis/mmdetection19-web-page-segmentation \
+  ghcr.io/webis-de/mmdetection19-web-page-segmentation:1.0.0 \
   python infer_single.py 000000
 
 # Fit segments
@@ -153,7 +150,7 @@ sudo nvidia-docker run \
   --env NVIDIA_VISIBLE_DEVICES=$gpu \
   --env KERAS_BACKEND=tensorflow \
   -v ${PWD}/webis-webseg-20-meier/:/src/workspace/data \
-  webis/meier17-web-page-segmentation:1.0.4 \
+  ghcr.io/webis-de/meier17-web-page-segmentation:1.0.4 \
   ./test.sh \
     ../data/input/test/ \
     $fold \
