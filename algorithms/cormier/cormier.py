@@ -20,7 +20,7 @@ dir_v = 1
 v_filter = np.multiply(np.array([[1], [2], [1]]), np.array([[-1, 0, 1]]))
 h_filter = np.transpose(v_filter)
 # Set parameters
-min_l = 15 # Minimum size of a region; also half-window width
+min_l = 45 # Minimum size of a region; also half-window width
 threshold = 0.5 # Threshold probability to accept a line as semantically significant
 prior = 0.01 # Prior probability that a given pixel is an edge
 line_length = 256 # Maximum line segment length for recursion
@@ -146,7 +146,7 @@ def segment(filename):
 # Function to recursively segment a page
 def segment_rec(h, v, level, t, b, l, r, d=None, empty=False):
     self = SegmentNode(t, b, l, r)
-    if level > 20 or b - t < min_l or r - l < min_l:
+    if level > 20 or b - t < (min_l * 2) or r - l < (min_l * 2):
         return self
     print(level, t, b, l, r, d)
     h_curr, v_curr = h[t:b, l:r], v[t:b, l:r].transpose()
